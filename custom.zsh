@@ -3,6 +3,11 @@
 # Files on the custom/ directory will be automatically loaded by the init
 # script, in alphabetical order.
 
+# Language settings
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+
 # iTerm integration
 if [ $ITERM_SESSION_ID ]; then
   export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
@@ -111,11 +116,18 @@ function dcups {  # dcups: docker-compose up service
 # Make aliases
 alias mf='make clean ; make flash'
 
+# Spotify shortcut
+alias sp="spotify"
+
 # Alias for pytest, flake8, and flask
 alias pytest="python -m pytest"
 alias pt=pytest
 alias flake="python -m flake8"
 alias flask="python -m flask"
+
+# Force creation of Python virtual environment in project dir
+# This is needed as Pycharm recreates the virtual env and does not have this set when creating the environment
+export PIPENV_VENV_IN_PROJECT=true
 
 # Sleep enable disable shortcuts
 alias sleepon="pmset -a disablesleep 1"
