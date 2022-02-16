@@ -7,5 +7,5 @@ rm "$HOME/.zshrc"
 rm "$ZSH/custom/custom.zsh"
 
 # Create symlinks to version controlled files
-ln -s "$HOME/.zsh_config/.zshrc" "$HOME/.zshrc"
-ln -s "$HOME/.zsh_config/custom.zsh" "$ZSH/custom/custom.zsh"
+ln -s "zshrc" "$HOME/.zshrc"
+ln -s "custom.zsh" "$ZSH/custom/custom.zsh"

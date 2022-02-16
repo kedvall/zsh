@@ -96,21 +96,16 @@ function rrund {
     docker run --name $IMAGE -d ${@:2} $IMAGE:$TAG
 }
 
-# Function for docker-compose up of a single service, then image prune
-function dcups {  # dcups: docker-compose up service
-    if (( $# == 0 ))
-    then
-        echo 'Usage: dcups <service_name>'
-        return 1
-    fi
-    
-    # Build and bring up service
-    echo "docker-compose up --build -d $1"
-    docker-compose up --build --detach $1
+# Function to build docker image in the currect directory
+function dbuild {  # dbuild: docker build
+    SERVICE_NAME=$(yq '.standard_config.name' config/service_config.yaml)
+    docker build . --build-arg SERVICE_PORT_ARG=$SERVICE_PORT --tag $SERVICE_NAME
+}
 
-    # Prune old images
-    echo "Pruning old images"
-    docker image prune -f >/dev/null
+# Function to run a docker image
+function drun {  # drun: docker run
+    SERVICE_NAME=$(yq '.standard_config.name' config/service_config.yaml)
+    docker run --rm -p $SERVICE_PORT:$SERVICE_PORT --name $SERVICE_NAME $SERVICE_NAME
 }
 
 # Make aliases
