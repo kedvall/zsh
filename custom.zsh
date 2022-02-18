@@ -47,66 +47,20 @@ function netl {
     fi
 }
 
-# Function for Docker rm then run
-function rrun {
-    if (( $# == 0 ))
-    then
-        echo 'Usage: rrun <container_name> [CONTAINER OPTIONS]'
-        echo 'Ex: rrun my_container -d -p 80:80 my_container:latest'
-        echo ' => docker run --name my_container -d -p 80:80 my_container:latest'
-        return 1
-    fi
-
-    # Stop and remove current Docker container
-    echo "Stopping container '$1'"
-    docker stop $1 >/dev/null
-    echo "Removing container '$1'"
-    docker rm $1 >/dev/null
-
-    # Run new Docker container
-    echo "docker run --name $1 ${@:2}"
-    docker run --name $1 ${@:2}
-}
-
-# Function for Docker rm then run, with DEFAULTS!
-function rrund {
-    if (( $# == 0 ))
-    then
-        echo 'Usage: rrund <container_name>:<tag> [CONTAINER OPTIONS]'
-        echo 'Ex: rrund my_container:test -p 80:80'
-        echo ' => docker run --name my_container -d -p 80:80 my_container:test'
-        return 1
-    fi
-
-    # Separate image and tag
-    IFS=':' read -A IMAGE_ARGS <<< "$1";
-    IMAGE="${IMAGE_ARGS[1]}"
-    TAG="${IMAGE_ARGS[2]}"
-
-    if [ -z "$TAG" ]; then TAG="latest"; fi
-
-    # Stop and remove current Docker container
-    echo "Stopping container '$IMAGE'"
-    docker stop $IMAGE >/dev/null
-    echo "Removing container '$IMAGE'"
-    docker rm $IMAGE >/dev/null
-
-    # Run new Docker container
-    echo "docker run --name $IMAGE -d ${@:2} $IMAGE:$TAG"
-    docker run --name $IMAGE -d ${@:2} $IMAGE:$TAG
-}
 
 # Function to build docker image in the currect directory
 function dbuild {  # dbuild: docker build
     SERVICE_NAME=$(yq '.standard_config.name' config/service_config.yaml)
-    docker build . --build-arg SERVICE_PORT_ARG=$SERVICE_PORT --tag $SERVICE_NAME
+    docker build . --build-arg SERVICE_PORT_ARG=$LOCAL_SERVICE_PORT --build-arg SERVICE_NAME_ARG=$SERVICE_NAME --tag $SERVICE_NAME
 }
+alias db='dbuild'
 
 # Function to run a docker image
 function drun {  # drun: docker run
     SERVICE_NAME=$(yq '.standard_config.name' config/service_config.yaml)
-    docker run --rm -p $SERVICE_PORT:$SERVICE_PORT --name $SERVICE_NAME $SERVICE_NAME
+    docker run --rm -p $LOCAL_SERVICE_PORT:$LOCAL_SERVICE_PORT --name $SERVICE_NAME $SERVICE_NAME
 }
+alias dr='drun'
 
 # Make aliases
 alias mf='make clean ; make flash'
