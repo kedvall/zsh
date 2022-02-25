@@ -51,7 +51,7 @@ function netl {
 # Function to build docker image in the currect directory
 function dbuild {  # dbuild: docker build
     SERVICE_NAME=$(yq '.standard_config.name' config/service_config.yaml)
-    docker build . --build-arg SERVICE_PORT_ARG=$LOCAL_SERVICE_PORT --build-arg SERVICE_NAME_ARG=$SERVICE_NAME --tag $SERVICE_NAME
+    docker build . --build-arg SERVICE_PORT_ARG=$LOCAL_SERVICE_PORT --tag $SERVICE_NAME
 }
 alias db='dbuild'
 
