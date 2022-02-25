@@ -21,6 +21,7 @@ alias gs='git status'
 alias gc='git add --all; git commit -m'
 alias gp='git push'
 alias gpl='git pull'
+alias gl='git log'
 alias gdc='git diff > diff.diff; code diff.diff'
 
 ## SSH Servers
@@ -92,4 +93,8 @@ alias pcd="pycharm diff"
 
 # Export HTTP(S) proxy
 export http_proxy="http://127.0.0.1:7890"
-export https_proxy="http://127.0.0.1:7890"
+export HTTP_PROXY="$http_proxy"
+export https_proxy="$http_proxy"
+export HTTPS_PROXY="$http_proxy"
+export no_proxy="localhost,127.0.0.1,192.168.0.1/24,192.168.1.1/24"
+export NO_PROXY="$no_proxy"
