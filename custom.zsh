@@ -20,8 +20,8 @@ cs() { cd "$@" && ls }
 alias gs='git status'
 alias gc='git add --all; git commit -m'
 alias gp='git push'
-alias gpl='git pull'
-alias gl='git log'
+alias gl='git pull'
+alias gll='git log'
 alias gdc='git diff > diff.diff; code diff.diff'
 
 ## SSH Servers
