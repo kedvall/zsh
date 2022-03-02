@@ -3,15 +3,30 @@
 # Files on the custom/ directory will be automatically loaded by the init
 # script, in alphabetical order.
 
+# iTerm integration
+if [ $ITERM_SESSION_ID ]; then
+  export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
+fi
+
 # Language settings
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 
-# iTerm integration
-if [ $ITERM_SESSION_ID ]; then
-  export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
-fi
+# Export HTTP(S) proxy
+export http_proxy="http://127.0.0.1:7890"
+export HTTP_PROXY="$http_proxy"
+export https_proxy="$http_proxy"
+export HTTPS_PROXY="$http_proxy"
+export no_proxy="localhost,127.0.0.1, 0.0.0.0, 192.168.0.1/24,192.168.1.1/24"
+export NO_PROXY="$no_proxy"
+
+function unset_proxy {
+    unset http_proxy
+    unset HTTP_PROXY
+    unset https_proxy
+    unset HTTPS_PROXY
+}
 
 ## General commands
 cs() { cd "$@" && ls }
@@ -90,11 +105,3 @@ alias cmoni="can_moni"
 # Pycharm launcher and diff shortcuts
 alias pc="pycharm ."
 alias pcd="pycharm diff"
-
-# Export HTTP(S) proxy
-export http_proxy="http://127.0.0.1:7890"
-export HTTP_PROXY="$http_proxy"
-export https_proxy="$http_proxy"
-export HTTPS_PROXY="$http_proxy"
-export no_proxy="localhost,127.0.0.1,192.168.0.1/24,192.168.1.1/24"
-export NO_PROXY="$no_proxy"
