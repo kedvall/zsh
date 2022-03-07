@@ -90,6 +90,7 @@ alias pt=pytest
 alias flake="python -m flake8"
 alias flask="python -m flask"
 alias fr="flask run"
+alias fs="flask shell"
 
 # Force creation of Python virtual environment in project dir
 # This is needed as Pycharm recreates the virtual env and does not have this set when creating the environment
