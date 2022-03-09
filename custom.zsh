@@ -63,6 +63,22 @@ function netl {
     fi
 }
 
+# Function to start and stop local mongodb service
+function mongo {
+    if [[ "$1" = "start" ]]
+    then
+        brew services start mongodb-community@5.0
+    elif [[ "$1" = "stop" ]]
+    then
+        brew services stop mongodb-community@5.0
+    elif [[ "$1" = "restart" ]]
+    then
+        brew services restart mongodb-community@5.0
+    else
+        mongosh $1  # Pass through to mongosh
+    fi
+}
+
 
 # Function to build docker image in the currect directory
 function dbuild {  # dbuild: docker build
