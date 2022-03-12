@@ -94,6 +94,8 @@ function drun {  # drun: docker run
 }
 alias dr='drun'
 
+alias kd='kube-deploy'
+
 # Make aliases
 alias mf='make clean ; make flash'
 
