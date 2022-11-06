@@ -113,8 +113,6 @@ source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
-
 # iTerm integration
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -126,3 +124,6 @@ GIT_AUTO_FETCH_INTERVAL=60  # in seconds
 
 # Turn on automatic ZSH alias search for each command
 ZSH_ALIAS_FINDER_AUTOMATIC=true
+
+# Disable glob matching so '?' character can be used normally
+unsetopt nomatch

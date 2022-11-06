@@ -18,7 +18,7 @@ export http_proxy="http://127.0.0.1:7890"
 export HTTP_PROXY="$http_proxy"
 export https_proxy="$http_proxy"
 export HTTPS_PROXY="$http_proxy"
-export no_proxy="localhost,127.0.0.1, 0.0.0.0, 192.168.0.1/24,192.168.1.1/24"
+export no_proxy="localhost, 127.0.0.1, 0.0.0.0, 192.168.0.1/24, 192.168.1.1/24, .docker.internal"
 export NO_PROXY="$no_proxy"
 
 function unset_proxy {
@@ -26,6 +26,10 @@ function unset_proxy {
     unset HTTP_PROXY
     unset https_proxy
     unset HTTPS_PROXY
+}
+
+function ip {
+    ifconfig | grep 192 -B4
 }
 
 ## General commands
@@ -39,20 +43,17 @@ alias gl='git pull'
 alias gll='git log'
 alias gdc='git diff > diff.diff; code diff.diff'
 
-## SSH Servers
-alias lf='ssh lf@192.168.1.82'
-alias bk='ssh backups'
-alias cpi='ssh cpi'
+# Git cleanup
+function gclean {
+    git fetch --prune
+    git branch --merged | egrep -v "(^\*|main)" | xargs git branch -d
+    git branch -r --merged | egrep -v "(^\*|main)" | xargs -n 1 git push --delete origin
+}
 
 # HTTPie commands
 alias post='http POST'
 alias put='http PUT'
 alias get='http GET'
-
-# Function for viewing LHC logs
-function lhclog {
-    lhc_log_viewer.sh $@
-}
 
 function netl {
     if (( $# == 0 ))
@@ -121,6 +122,8 @@ alias sleepoff="pmset -a disablesleep 1"
 # CANbus monitor
 alias cmoni="can_moni"
 
-# Pycharm launcher and diff shortcuts
+# Pycharm / CLion launcher and diff shortcuts
 alias pc="pycharm ."
 alias pcd="pycharm diff"
+alias cl="clion ."
+alias fl="fleet ."
