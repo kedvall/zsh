@@ -13,29 +13,11 @@ export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 
-# Export HTTP(S) proxy
-export http_proxy="http://127.0.0.1:7890"
-export HTTP_PROXY="$http_proxy"
-export https_proxy="$http_proxy"
-export HTTPS_PROXY="$http_proxy"
-export no_proxy="localhost, 127.0.0.1, 0.0.0.0, 192.168.0.1/24, 192.168.1.1/24, .docker.internal"
-export NO_PROXY="$no_proxy"
+# Force creation of Python virtual environment in project dir
+# This is needed as Pycharm recreates the virtual env and does not have this set when creating the environment
+export PIPENV_VENV_IN_PROJECT=true
 
-function unset_proxy {
-    unset http_proxy
-    unset HTTP_PROXY
-    unset https_proxy
-    unset HTTPS_PROXY
-}
-
-function ip {
-    ifconfig | grep 192 -B4
-}
-
-## General commands
-cs() { cd "$@" && ls }
-
-## Git commands
+## Git aliases
 alias gs='git status'
 alias gc='git add --all; git commit -m'
 alias gp='git push'
@@ -43,17 +25,45 @@ alias gl='git pull'
 alias gll='git log'
 alias gdc='git diff > diff.diff; code diff.diff'
 
-# Git cleanup
-function gclean {
-    git fetch --prune
-    git branch --merged | egrep -v "(^\*|main)" | xargs git branch -d
-    git branch -r --merged | egrep -v "(^\*|main)" | xargs -n 1 git push --delete origin
-}
-
-# HTTPie commands
+# HTTPie aliases
 alias post='http POST'
 alias put='http PUT'
 alias get='http GET'
+
+# Export HTTP(S) proxy
+function proxy {
+   export http_proxy="http://127.0.0.1:7890"
+   export HTTP_PROXY="$http_proxy"
+   export https_proxy="$http_proxy"
+   export HTTPS_PROXY="$http_proxy"
+   export no_proxy="10.0.0.0/8,192.168.0.0/16,127.0.0.0/8,172.16.0.0/16,localhost,0.0.0.0,.docker.internal,hz-onsite.life-foundry.com"
+   export NO_PROXY="$no_proxy"
+}
+
+function noproxy {
+    unset http_proxy
+    unset HTTP_PROXY
+    unset https_proxy
+    unset HTTPS_PROXY
+    unset no_proxy
+    unset NO_PROXY
+}
+
+function ip {
+    ifconfig | grep 192 -B4
+}
+
+# CD into a directory then run ls
+cs() {
+    cd "$@" && ll
+}
+
+# Git cleanup function
+function clean() {
+    git fetch --prune -v
+    git branch --merged | egrep -v "(^\*|main)" | xargs git branch -d
+    git branch -r --merged | egrep -v "(^\*|main)" | xargs -n 1 git push --delete origin
+}
 
 function netl {
     if (( $# == 0 ))
@@ -95,32 +105,24 @@ function drun {  # drun: docker run
 }
 alias dr='drun'
 
-alias kd='kube-deploy'
-
-# Make aliases
-alias mf='make clean ; make flash'
+# Sleep enable disable shortcuts
+alias sleepon="pmset -a disablesleep 1"
+alias sleepoff="pmset -a disablesleep 1"
 
 # Spotify shortcut
 alias sp="spotify"
 
-# Alias for pytest, flake8, and flask
+# Make clean then build/flash alias
+alias mf='make clean ; make flash'
+
+# Alias for pytest, flake8, and flask and kube-deploy tools
 alias pytest="python -m pytest"
 alias pt=pytest
 alias flake="python -m flake8"
 alias flask="python -m flask"
 alias fr="flask run"
 alias fs="flask shell"
-
-# Force creation of Python virtual environment in project dir
-# This is needed as Pycharm recreates the virtual env and does not have this set when creating the environment
-export PIPENV_VENV_IN_PROJECT=true
-
-# Sleep enable disable shortcuts
-alias sleepon="pmset -a disablesleep 1"
-alias sleepoff="pmset -a disablesleep 1"
-
-# CANbus monitor
-alias cmoni="can_moni"
+alias kd='kube-deploy'
 
 # Pycharm / CLion launcher and diff shortcuts
 alias pc="pycharm ."
