@@ -125,7 +125,27 @@ alias fs="flask shell"
 alias kd='kube-deploy'
 
 # Pycharm / CLion launcher and diff shortcuts
-alias pc="pycharm ."
+
+function launch_editor() {
+    if [ "$2" != "" ]
+    then
+        $1 $2
+    else
+        $1 .
+    fi
+}
+
+function pc() {
+    launch_editor pycharm "${1}"
+}
 alias pcd="pycharm diff"
-alias cl="clion ."
-alias fl="fleet ."
+
+function cl() {
+    launch_editor clion "${1}"
+}
+alias cld="clion diff"
+
+function fl() {
+    launch_editor fleet "${1}"
+}
+alias fld="fleet diff"
