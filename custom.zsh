@@ -58,13 +58,6 @@ cs() {
     cd "$@" && ll
 }
 
-# Git cleanup function
-function clean() {
-    git fetch --prune -v
-    git branch --merged | egrep -v "(^\*|main)" | xargs git branch -d
-    git branch -r --merged | egrep -v "(^\*|main)" | xargs -n 1 git push --delete origin
-}
-
 function netl {
     if (( $# == 0 ))
     then
