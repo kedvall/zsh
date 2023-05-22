@@ -1,0 +1,11 @@
+layout_poetry() {
+  if [[ ! -f "pyproject.toml" || ! -d ".venv" ]]; then
+    echo No Poetry environment configured, please configure Poetry environment through Pycharm IDE
+    exit 0
+  fi
+
+  local VENV=$(dirname $(poetry run which python))
+  export VIRTUAL_ENV=$(echo "$VENV" | rev | cut -d'/' -f2- | rev)
+  export POETRY_ACTIVE=1
+  PATH_add "$VENV"
+}

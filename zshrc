@@ -76,7 +76,7 @@ export UPDATE_ZSH_DAYS=7
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(alias-finder bgnotify brew colorize direnv docker extract git git-auto-fetch httpie kubectl macos pipenv safe-paste sudo up zsh-autosuggestions z )
+plugins=(alias-finder bgnotify brew colorize direnv docker extract git git-auto-fetch httpie kubectl macos poetry safe-paste sudo up zsh-autosuggestions z )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -127,3 +127,6 @@ ZSH_ALIAS_FINDER_AUTOMATIC=true
 
 # Disable glob matching so '?' character can be used normally
 unsetopt nomatch
+
+# Export Poetry path
+export PATH="${HOME}/.local/bin:$PATH"

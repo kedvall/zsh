@@ -8,21 +8,24 @@ if [ $ITERM_SESSION_ID ]; then
   export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
 fi
 
+# Sleep enable / disable shortcuts
+alias sleepon="pmset -a disablesleep 1"
+alias sleepoff="pmset -a disablesleep 0"
+
+# Spotify shortcut
+alias sp="spotify"
+
 # Language settings
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 
-# Force creation of Python virtual environment in project dir
-# This is needed as Pycharm recreates the virtual env and does not have this set when creating the environment
-export PIPENV_VENV_IN_PROJECT=true
-
 ## Git aliases
-alias gs='git status'
+alias gs='git switch'
 alias gc='git add --all; git commit -m'
 alias gp='git push'
 alias gl='git pull'
-alias gll='git log'
+alias glg='git log'
 alias gdc='git diff > diff.diff; code diff.diff'
 
 # HTTPie aliases
@@ -36,7 +39,7 @@ function proxy {
    export HTTP_PROXY="$http_proxy"
    export https_proxy="$http_proxy"
    export HTTPS_PROXY="$http_proxy"
-   export no_proxy="10.0.0.0/8,192.168.0.0/16,127.0.0.0/8,172.16.0.0/16,localhost,0.0.0.0,.docker.internal,hz-onsite.life-foundry.com"
+   export no_proxy="10.0.0.0/8,192.168.0.0/16,127.0.0.0/8,172.16.0.0/16,localhost,0.0.0.0,.docker.internal,*.life-foundry.com"
    export NO_PROXY="$no_proxy"
 }
 
@@ -83,30 +86,25 @@ function mongo {
     fi
 }
 
-
 # Function to build docker image in the currect directory
 function dbuild {  # dbuild: docker build
     SERVICE_NAME=$(yq '.standard_config.name' config/service_config.yaml)
-    docker build . --build-arg SERVICE_PORT_ARG=$LOCAL_SERVICE_PORT --tag $SERVICE_NAME
+    docker build . --tag $SERVICE_NAME
 }
 alias db='dbuild'
 
 # Function to run a docker image
 function drun {  # drun: docker run
     SERVICE_NAME=$(yq '.standard_config.name' config/service_config.yaml)
-    docker run --rm -p $LOCAL_SERVICE_PORT:$LOCAL_SERVICE_PORT --name $SERVICE_NAME $SERVICE_NAME
+    docker run --rm -p 5000:5000 --name $SERVICE_NAME $SERVICE_NAME
 }
 alias dr='drun'
 
-# Sleep enable disable shortcuts
-alias sleepon="pmset -a disablesleep 1"
-alias sleepoff="pmset -a disablesleep 1"
-
-# Spotify shortcut
-alias sp="spotify"
-
 # Make clean then build/flash alias
 alias mf='make clean ; make flash'
+
+# Lazy python alias
+alias py="python"
 
 # Alias for pytest, flake8, and flask and kube-deploy tools
 alias pytest="python -m pytest"
@@ -117,8 +115,11 @@ alias fr="flask run"
 alias fs="flask shell"
 alias kd='kube-deploy'
 
-# Pycharm / CLion launcher and diff shortcuts
+# Force creation of Python virtual environment in project dir
+export POETRY_VIRTUALENVS_IN_PROJECT=true
+alias po="poetry"
 
+# Pycharm / CLion launcher and diff shortcuts
 function launch_editor() {
     if [ "$2" != "" ]
     then
